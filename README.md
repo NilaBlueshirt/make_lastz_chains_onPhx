@@ -12,7 +12,7 @@ The mamba env can be recreated from the yml file.
 1. Pull down this repo, or the original make_lastz_chains repo but patch the `parallelization/nextflow_wrapper.py` file.
 2. Create an input folder and a log folder in this repo folder. Put the input sample pairs in the input folder. Update the `lastz_ref_query_list.txt` if needed; pay attention to the tab/white space in this manifest file. The `cut_fields_separately.sh` was used to clean up white spaces in the manifest file. 
 3. Modify the `test.sh` sbatch script. Manually submit three to four sample pairs at a time; too many main jobs running simultaneously would cause some issues for slurm and nextflow.
-4. Since the nextflow child jobs are controlled by the wrapper script, extra time or memory flags are not needed here.
+4. Since the nextflow child jobs are controlled by the wrapper script, extra time or memory flags are not needed in the main command.
 5. The smaller the `chunk size`, the larger the count of the nextflow child jobs will be. If a run failed at the `lastz` or the `chain_run` step, consider reducing the chunk size. The recommended chunk size for these runs is 40M for both reference and query sequences.
 6. The slurm `.out` file has the nextflow logs, the `.err` file has the main job log, which would be the same as `working_dir/run.log`. Both slurm job files are important to keep.
 7. A successful run will have a `.final.chain.gz` file, and `pipeline_parameters.json`, `run.log`, `steps.json`. A failed run will have lots of temp folders in the working directory.
