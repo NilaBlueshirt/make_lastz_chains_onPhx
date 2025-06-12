@@ -54,6 +54,8 @@ chainFilter -minScore=1000 Pseudophryne_corroboree.Crinia_signifera.filled.chain
 gzip -c Pseudophryne_corroboree.Crinia_signifera.filled.chain > Pseudophryne_corroboree.Crinia_signifera.final.chain.gz
 ```
 
+The `chainCleaner`, `chainFilter` and `gzip` commands are adapted from `make_lastz_chains/make_chains.py` and `make_lastz_chains/steps_implementations/clean_chain_step.py`. The `-c` flag in the `gzip` command is to preserve the input file and ouput the compressed file with a new file name.
+
 More info:
 https://github.com/hillerlab/make_lastz_chains/pull/92
 https://github.com/hillerlab/make_lastz_chains/issues/66
