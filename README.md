@@ -14,12 +14,15 @@ The mamba env can be recreated from the yml file.
 3. Modify the `test.sh` sbatch script. Manually submit three to four sample pairs at a time; too many main jobs running simultaneously would cause some issues for slurm and nextflow.
 4. Since the nextflow child jobs are controlled by the wrapper script, extra time or memory flags are not needed here.
 5. The smaller the `chunk size`, the larger the count of the nextflow child jobs will be. If a run failed at the `lastz` or the `chain_run` step, consider reducing the chunk size. The recommended chunk size for these runs is 40M for both reference and query sequences.
+6. The slurm `.out` file has the nextflow logs, the `.err` file has the main job log, which would be the same as `working_dir/run.log`. Both slurm job files are important to keep.
+7. A successful run will have a `.final.chain.gz` file, and `pipeline_parameters.json`, `run.log`, `steps.json`. A failed run will have lots of temp folders in the working directory.
 
 <br />
 
 ## To resume a run from the failed step
 1. Keep the original working directory of this failed run.
-2. Modify the `restart.sh` sbatch script to make sure the working directory name is the same, and also change the keyword for the `--continue_from_step` flag: `partition,lastz,cat,chain_run,chain_merge,fill_chains,clean_chains`
+2. Check the `working_dir/steps.json` to find the failed step.
+3. Modify the `restart.sh` sbatch script to make sure the working directory name is the same, and also change the keyword for the `--continue_from_step` flag: `partition,lastz,cat,chain_run,chain_merge,fill_chains,clean_chains`
 Source: The `readme` file in the https://github.com/hillerlab/make_lastz_chains
 
 <br />
