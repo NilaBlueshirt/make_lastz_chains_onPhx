@@ -1,5 +1,5 @@
 # make_lastz_chains_onPhx
-This repo saves all the scripts for processing the 28 sample pairs on Phx in 2025 from March to May.
+This repo saves all the scripts for processing the 28 sample pairs on Phx in 2025 from March to May. The paper USRSE25_Nextflow_HPC.pdf has been submitted to the USRSE 2025 conference, which has some investigations about running Nextflow-based software with Slurm.
 
 The make_lastz_chains folder is the code cloned from the original repo, version 2.8.0, at the time. In the parallelization folder, the nextflow_wrapper.py script has the modifications we added to work with the Phx slurm. It controls the nextflow behaviors. 
 More info: https://training.nextflow.io/2.1/basic_training/debugging/#dynamic-resources-allocation
