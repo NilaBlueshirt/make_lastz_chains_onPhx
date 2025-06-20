@@ -34,7 +34,7 @@ However, the newest version of Kent tools requires a newer `GLIBC`, which Phx do
 
 In the progress tracking Google sheet, if a sample pair has the note like `manually ran chainCleaner, Assertion error` or `manually ran chainCleaner`, the Kent binary used was `make_lastz_chains/HL_kent_binaries_bak/chainCleaner_bakMay`, as well as the `chainFilter` and the `chainSort` from the mamba env. If the note was `manually ran chainCleaner apptainer,  chainFilter and gzip, done`, Kent binaries are v482 inside a Ubuntu 22.04-based apptainer. A copy of such container is at `/packages/simg/ucsc-kent_v482.sif` on Phx. The `create_apptainer.sh` file here has the commands for building such an apptainer. 
 
-### To use such an apptainer to re-run the clean_chains step
+### To use the apptainer to re-run the clean_chains step
 
 1. Request an interactive session with 20min and 30G memory as the first try. If getting the "Killed" error message when running `chainCleaner`, increase the memory.
 2. Load `mamba` and activate the env.
@@ -57,7 +57,11 @@ gzip -c Pseudophryne_corroboree.Crinia_signifera.filled.chain > Pseudophryne_cor
 The `chainCleaner`, `chainFilter` and `gzip` commands are adapted from `make_lastz_chains/make_chains.py` and `make_lastz_chains/steps_implementations/clean_chain_step.py`. The `-c` flag in the `gzip` command is to preserve the input file and ouput the compressed file with a new file name.
 
 More info:
+
 https://github.com/hillerlab/make_lastz_chains/pull/92
+
 https://github.com/hillerlab/make_lastz_chains/issues/66
+
 http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/
+
 https://github.com/ucscGenomeBrowser/kent
