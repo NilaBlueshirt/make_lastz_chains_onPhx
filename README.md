@@ -4,7 +4,7 @@ This repo saves all the scripts for processing the 28 sample pairs on Phx in 202
 The make_lastz_chains folder is the code cloned from the original repo, version 2.8.0, at the time. In the parallelization folder, the nextflow_wrapper.py script has the modifications we added to work with the Phx slurm. It controls the nextflow behaviors. 
 More info: https://training.nextflow.io/2.1/basic_training/debugging/#dynamic-resources-allocation
 
-The mamba env can be recreated from the yml file.
+The mamba env can be recreated from the yml file. Please see below for more details about the Kent binaries.
 
 <br />
 
@@ -32,7 +32,9 @@ The mamba env created on Phx has the UCSC Kent tools at version 455, which doesn
 
 However, the newest version of Kent tools requires a newer `GLIBC`, which Phx doesn't have. The latest version of the Kent binaries has been downloaded in `make_lastz_chains/HL_kent_binaries` and `HL_kent_binaries_bak`; they are not called by the workflow, but they can be used manually. 
 
-In the progress tracking Google sheet, if a sample pair has the note like `manually ran chainCleaner, Assertion error` or `manually ran chainCleaner`, the Kent binary used was `make_lastz_chains/HL_kent_binaries_bak/chainCleaner_bakMay`, as well as the `chainFilter` and the `chainSort` from the mamba env. If the note was `manually ran chainCleaner apptainer,  chainFilter and gzip, done`, Kent binaries are v482 inside a Ubuntu 22.04-based apptainer. A copy of such container is at `/packages/simg/ucsc-kent_v482.sif` on Phx. The `create_apptainer.sh` file here has the commands for building such an apptainer. 
+In the progress tracking Google sheet, if a sample pair has the note like `manually ran chainCleaner, Assertion error` or `manually ran chainCleaner`, the Kent binary used was `make_lastz_chains/HL_kent_binaries_bak/chainCleaner_bakMay`, as well as the `chainFilter` and the `chainSort` from the mamba env. 
+
+If the note was `manually ran chainCleaner apptainer,  chainFilter and gzip, done`, Kent binaries are v482 inside a Ubuntu 22.04-based apptainer. A copy of such container is at `/packages/simg/ucsc-kent_v482.sif` on Phx. The `create_apptainer.sh` file here has the commands for building such an apptainer. 
 
 ### To use the apptainer to re-run the clean_chains step
 
