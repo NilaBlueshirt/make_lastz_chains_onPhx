@@ -29,7 +29,7 @@ Source: The `readme` file in the https://github.com/hillerlab/make_lastz_chains
 <br />
 
 ## To resume a run from the clean_chains step
-The mamba env created on Phx has the UCSC Kent tools at version 455, which doesn't have some of the newest version's patches. So when the input data is huge, the workflow calls these older Kent tools and gets an Assertion error at the final step, `clean_chain`.
+The mamba env created on Phx has the UCSC Kent tools at version 455, which doesn't have some of the newest version's patches and cannot handle long sequences. So when the input sequences are extremly long, the workflow calls these older Kent tools and gets an "Assertion error" at the final step, the `clean_chain` step.
 
 However, the newest version of Kent tools requires a newer `GLIBC`, which Phx doesn't have. The latest version of the Kent binaries has been downloaded in `make_lastz_chains/HL_kent_binaries` and `HL_kent_binaries_bak`; they are not called by the workflow, but they can be used manually. 
 
