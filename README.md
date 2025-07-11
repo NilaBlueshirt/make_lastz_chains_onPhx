@@ -19,7 +19,7 @@ The mamba env can be recreated from the yml file. Please see below for more deta
 
 <br />
 
-## To resume a run from the failed step
+## To resume a run from a failed step
 1. Keep the original working directory of this failed run.
 2. Check the `working_dir/steps.json` to find the failed step.
 3. Modify the `restart.sh` sbatch script to make sure the working directory name is the same, and also change the keyword for the `--continue_from_step` flag: `partition,lastz,cat,chain_run,chain_merge,fill_chains,clean_chains`
