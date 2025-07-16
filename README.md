@@ -42,10 +42,16 @@ If the note was `manually ran chainCleaner apptainer,  chainFilter and gzip, don
 1. Request an interactive session with 20min and 30G memory as the first try. If getting the "Killed" error message when running `chainCleaner`, increase the memory.
 2. Load `mamba` and activate the env.
 3. Check the run.log file in the working directory of this failed run and copy the `chainCleaner` command at the end of the file.
-4. Past the copied command in the second line below, then `cd` into the working directory, and run this code block:
+4. Past the copied command in the second line below, then `cd` into the working directory, and run the command using the `before_cleaning.chain.gz` file:
 ```
 apptainer exec /packages/simg/chaincleaner.sif chainCleaner \
-...
+<paste the code block here>
+```
+
+Below is a block of example codes:
+```
+apptainer exec /packages/simg/chaincleaner.sif chainCleaner \
+/path/to/project_dir/temp_chain_run/Pseudophryne_corroboree.Crinia_signifera.before_cleaning.chain.gz /path/to/project_dir/target.2bit /path/to/project_dir/query.2bit /path/to/project_dir/temp_chain_run/Pseudophryne_corroboree.Crinia_signifera.filled.chain__temp /path/to/project_dir/temp_chain_run/removed_suspects.bed -linearGap=loose -tSizes=/path/to/project_dir/target.chrom.sizes -qSizes=/path/to/project_dir/query.chrom.sizes -LRfoldThreshold=2.5 -doPairs -LRfoldThresholdPairs=10 -maxPairDistance=10000 -maxSuspectScore=100000 -minBrokenChainScore=75000
 ```
 
 5. After the `chainCleaner`, there are two more steps to get the end product:
@@ -58,6 +64,9 @@ gzip -c Pseudophryne_corroboree.Crinia_signifera.filled.chain > Pseudophryne_cor
 ```
 
 The `chainCleaner`, `chainFilter` and `gzip` commands are adapted from `make_lastz_chains/make_chains.py` and `make_lastz_chains/steps_implementations/clean_chain_step.py`. The `-c` flag in the `gzip` command is to preserve the input file and ouput the compressed file with a new file name.
+
+
+
 
 More info:
 
