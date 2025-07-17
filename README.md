@@ -44,13 +44,13 @@ If the note was `manually ran chainCleaner apptainer,  chainFilter and gzip, don
 3. Check the `run.log` file in the working directory of this failed run and copy the `chainCleaner` command at the end of the file.
 4. Past the copied command in the second line below, then `cd` into the working directory, and run the command using the `before_cleaning.chain.gz` file:
 ```
-apptainer exec /packages/simg/chaincleaner.sif chainCleaner \
+apptainer exec /packages/simg/ucsc-kent_v482.sif chainCleaner \
 <paste the code block here>
 ```
 
 Below is a block of example codes:
 ```
-apptainer exec /packages/simg/chaincleaner.sif chainCleaner \
+apptainer exec /packages/simg/ucsc-kent_v482.sif chainCleaner \
 /path/to/project_dir/temp_chain_run/Pseudophryne_corroboree.Crinia_signifera.before_cleaning.chain.gz /path/to/project_dir/target.2bit /path/to/project_dir/query.2bit /path/to/project_dir/temp_chain_run/Pseudophryne_corroboree.Crinia_signifera.filled.chain__temp /path/to/project_dir/temp_chain_run/removed_suspects.bed -linearGap=loose -tSizes=/path/to/project_dir/target.chrom.sizes -qSizes=/path/to/project_dir/query.chrom.sizes -LRfoldThreshold=2.5 -doPairs -LRfoldThresholdPairs=10 -maxPairDistance=10000 -maxSuspectScore=100000 -minBrokenChainScore=75000
 ```
 
