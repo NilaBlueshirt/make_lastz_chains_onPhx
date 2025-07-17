@@ -15,4 +15,4 @@ chmod -R +x /usr/local/bin/
 
 (exit out of the apptainer)
 
-apptainer build chaincleaner.sif ubuntu_sandbox
+apptainer build example.sif ubuntu_sandbox
