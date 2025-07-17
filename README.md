@@ -1,10 +1,10 @@
 # make_lastz_chains_onPhx
-This repo saves all the scripts for processing the 28 sample pairs on Phx in 2025 from March to May. The paper USRSE25_Nextflow_HPC.pdf has been submitted to the USRSE 2025 conference, which documented our investigations about running Nextflow-based software under Slurm.
+This repo saves all the scripts for processing the 28 sample pairs on Phx in 2025 from March to May. The paper `USRSE25_Nextflow_HPC.pdf`, which documented our investigations about running Nextflow-based software under Slurm, has been accepted by the USRSE 2025 conference.
 
 The make_lastz_chains folder is the code cloned from the original repo, version 2.8.0, at the time. In the parallelization folder, the nextflow_wrapper.py script has the modifications we added to work with the Phx slurm. It controls the nextflow behaviors. 
 More info: https://training.nextflow.io/2.1/basic_training/debugging/#dynamic-resources-allocation
 
-The mamba env can be recreated from the yml file. Please see below for more details about the Kent binaries.
+The mamba env can be recreated from the `yml` file. Please see below for more details about the Kent binaries.
 
 <br />
 
@@ -41,7 +41,7 @@ If the note was `manually ran chainCleaner apptainer,  chainFilter and gzip, don
 
 1. Request an interactive session with 20min and 30G memory as the first try. If getting the "Killed" error message when running `chainCleaner`, increase the memory.
 2. Load `mamba` and activate the env.
-3. Check the run.log file in the working directory of this failed run and copy the `chainCleaner` command at the end of the file.
+3. Check the `run.log` file in the working directory of this failed run and copy the `chainCleaner` command at the end of the file.
 4. Past the copied command in the second line below, then `cd` into the working directory, and run the command using the `before_cleaning.chain.gz` file:
 ```
 apptainer exec /packages/simg/chaincleaner.sif chainCleaner \
