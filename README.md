@@ -8,7 +8,7 @@ The mamba env can be recreated from the `yml` file. Please see below for more de
 
 <br />
 
-## To process a fresh sample pair
+## To process a fresh sample pair without job array
 1. Pull down this repo, or the original make_lastz_chains repo but patch the `parallelization/nextflow_wrapper.py` file.
 2. Create an `input` folder and a `log` folder in this repo folder. Put the input sample pairs in the input folder. Update the `lastz_ref_query_list.txt` if needed; pay attention to the tab/white space in this manifest file. The `cut_fields_separately.sh` was used to clean up white spaces in the manifest file. 
 3. Modify the `test.sh` sbatch script. Manually submit three to four sample pairs at a time; too many main jobs running simultaneously would cause some issues for slurm and nextflow.
@@ -16,6 +16,13 @@ The mamba env can be recreated from the `yml` file. Please see below for more de
 5. The smaller the `chunk size`, the larger the count of the nextflow child jobs will be. If a run failed at the `lastz` or the `chain_run` step, consider reducing the chunk size. The recommended chunk size for these runs is 40M for both reference and query sequences.
 6. The slurm `.out` file has the nextflow logs, the `.err` file has the main job log, which would be the same as `working_dir/run.log`. Both slurm job files are important to keep.
 7. A successful run will have a `.final.chain.gz` file, and `pipeline_parameters.json`, `run.log`, `steps.json`. A failed run will have lots of temp folders in the working directory.
+
+<br />
+
+## To process a fresh sample pair with job array (recommended)
+1. Pull down this repo, or the original make_lastz_chains repo but patch the `parallelization/nextflow_wrapper.py` file with `parallelization/nextflow_wrapper.py.array` in this repo.
+2. Modify the `test.sh` sbatch script to use Nextflow v25.
+2-7. Same as above. If the job runs normally, for the `lastz`. `chain_run` and `fill_chain` step, the child jobs will be batched into a couple of job arrays, instead of being submitted as individual sbatch jobs. This is very helpful for a busy cluster as the sub-jobs in a job array share the same fairshare score.
 
 <br />
 
@@ -77,3 +84,7 @@ https://github.com/hillerlab/make_lastz_chains/issues/66
 http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/
 
 https://github.com/ucscGenomeBrowser/kent
+
+https://github.com/nextflow-io/nextflow/discussions/5849
+
+https://www.nextflow.io/docs/stable/reference/process.html#array
