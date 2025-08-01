@@ -28,18 +28,18 @@ def create_aggregated_chart(csv_file='seff_results.csv'):
     
     # Cold color palette
     color_map = {
-        '0_0': '#0B5394',  # Dark Blue
-        '0_1': '#38761D',  # Dark Green  
-        '1_0': '#674EA7',  # Purple
-        '1_1': '#134F5C'   # Dark Teal
+        '0_0': '#c2a5cf',  # no array, dev - light purple
+        '0_1': '#a6dba0',  # no array, phx - light green
+        '1_0': '#7b3294',  # array, dev - dark purple
+        '1_1': '#008837'   # array, phx - dark green
     }
     
     # Labels for legend
     label_map = {
-        '0_0': 'Array=0, Cluster=0',
-        '0_1': 'Array=0, Cluster=1',
-        '1_0': 'Array=1, Cluster=0',
-        '1_1': 'Array=1, Cluster=1'
+        '0_0': 'No Array, Dev',
+        '0_1': 'No Array, Phx',
+        '1_0': 'Use Array, Dev',
+        '1_1': 'Use Array, Phx'
     }
     
     # Get unique sample pairs in order
@@ -82,10 +82,10 @@ def create_aggregated_chart(csv_file='seff_results.csv'):
     # Customize plot
     ax.set_xticks(x_positions)
     ax.set_xticklabels(sample_pairs, rotation=45, ha='right')
-    ax.set_xlabel('Sample Pair ID', fontsize=13, fontweight='bold')
-    ax.set_ylabel('Wall Time (Hours)', fontsize=13, fontweight='bold')
+    ax.set_xlabel('Sample Pair ID', fontsize=12)
+    ax.set_ylabel('Wall Time (Hours)', fontsize=12)
     ax.set_title('Average Wall Time by Sample Pair and Configuration\n(Error bars show standard error)', 
-                fontsize=15, fontweight='bold')
+                fontsize=12)
     
     # Add grid
     ax.grid(True, alpha=0.3, linestyle='--')

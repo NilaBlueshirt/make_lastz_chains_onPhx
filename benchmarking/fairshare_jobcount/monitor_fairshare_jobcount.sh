@@ -15,8 +15,13 @@ while true; do
     # Get current timestamp
     timestamp=$(date +"%Y-%m-%d %H:%M:%S")
     
-    # Get RealFairShare using myfairshare
-    realfairshare=$(myfairshare | grep "^[[:space:]]*$USER" | awk '{print $NF}')
+    # Get fairshare data (6th column where 2nd column matches username)
+    realfairshare=$(myfairshare 2>/dev/null | awk -v user="$USER" '$2 == user {print $6}')
+    
+    # If empty or invalid, set to 0
+    if [[ -z "$realfairshare" || ! "$realfairshare" =~ ^[0-9]+\.?[0-9]*$ ]]; then
+        realfairshare="0"
+    fi
     
     # Get number of running jobs
     running_jobs=$(squeue -u $USER -t RUNNING -h | wc -l)
@@ -24,7 +29,7 @@ while true; do
     # Append to CSV
     echo "$timestamp,$realfairshare,$running_jobs" >> "$output_file"
     
-    # Optional: Display current values
+    # Display current values
     echo "[$timestamp] RealFairShare: $realfairshare, Running Jobs: $running_jobs"
     
     # Wait 10 seconds

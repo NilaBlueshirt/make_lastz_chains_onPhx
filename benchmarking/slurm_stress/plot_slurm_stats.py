@@ -31,46 +31,68 @@ def plot_slurm_data_comparison(
     fig, ax = plt.subplots(figsize=(18, 10))
     fig.suptitle(plot_title, fontsize=20, y=0.95)
     
-    # Generate distinct colors for each line
-    colors = plt.cm.viridis(np.linspace(0, 1, len(data_files)))
+    # --- User-defined color palette ---
+    custom_colors = ['#c2a5cf', '#a6dba0', '#7b3294', '#008837']
 
     # --- 2. Loop Through Data Files and Plot Each as a Line ---
     for i, data_file in enumerate(data_files):
         print(f"\nProcessing file: {data_file}...")
 
         try:
-            # Load the dataset
-            df = pd.read_csv(data_file, parse_dates=['timestamp'])
-            df = df.sort_values('timestamp').reset_index(drop=True)
+            # Load the dataset without auto-parsing dates initially
+            df = pd.read_csv(data_file)
         except FileNotFoundError:
             print(f"  Warning: Data file not found at '{data_file}'. Skipping.")
             continue
-        except (KeyError, ValueError):
-            print(f"  Error: 'timestamp' column not found or in wrong format in {data_file}. Check CSV.")
+        except Exception as e:
+            print(f"  Error: Could not read CSV file {data_file}. Reason: {e}")
             continue
+
+        # --- 2a. Robust Date Parsing ---
+        if 'timestamp' not in df.columns:
+            print(f"  Error: 'timestamp' column not found in {data_file}. Skipping.")
+            continue
+            
+        # Explicitly convert to datetime, coercing errors to NaT (Not a Time)
+        df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+
+        # Check for and remove rows where date parsing failed
+        initial_rows = len(df)
+        df.dropna(subset=['timestamp'], inplace=True)
+        if len(df) < initial_rows:
+            print(f"  Warning: {initial_rows - len(df)} rows with invalid timestamp format were removed.")
+
+        if df.empty:
+            print(f"  Warning: No valid data left in '{data_file}' after cleaning timestamps. Skipping.")
+            continue
+
+        # Sort values after cleaning and before processing
+        df = df.sort_values('timestamp').reset_index(drop=True)
+
+        # --- 2b. Data Integrity Checks ---
+        # Check for known bad headers from a potential collector script bug
+        if 'Main' in df.columns and 'statistics' in df.columns:
+            print("  Warning: Detected potentially incorrect headers ('Main', 'statistics').")
+            print("           This may indicate a bug in the data collection script, causing misaligned columns.")
 
         # Check if the requested y_column exists
         if y_column not in df.columns:
             print(f"  Error: Column '{y_column}' not found in {data_file}.")
             print(f"  Available columns are: {list(df.columns)}")
             continue
-            
-        if df.empty:
-            print(f"  Warning: Data file '{data_file}' is empty. Skipping.")
-            continue
 
         # --- 3. Normalize the Time Axis ---
-        # Calculate time elapsed since the first timestamp in this file
         start_time = df['timestamp'].iloc[0]
-        # Convert timedelta to total hours for a clean numeric axis
         df['time_elapsed_hours'] = (df['timestamp'] - start_time).dt.total_seconds() / 3600.0
 
         # --- 4. Plot the Data ---
+        color = custom_colors[i % len(custom_colors)]
+        
         ax.plot(
             df['time_elapsed_hours'],
             df[y_column],
-            label=Path(data_file).name, # Label the line with the filename
-            color=colors[i],
+            label=Path(data_file).name,
+            color=color,
             linewidth=2
         )
 
@@ -79,15 +101,13 @@ def plot_slurm_data_comparison(
     ax.set_ylabel(y_column.replace('_', ' ').title(), fontsize=12)
     ax.grid(True, which='both', linestyle='--', linewidth=0.5)
     
-    # Only add legend if there are lines plotted
     if ax.get_legend_handles_labels()[0]:
         ax.legend(loc='upper left', title="Data Files")
     else:
-        ax.text(0.5, 0.5, "No data to plot.", ha='center', va='center', fontsize=12, color='red')
-
+        ax.text(0.5, 0.5, "No valid data to plot.", ha='center', va='center', fontsize=12, color='red')
 
     # --- 6. Finalize and Save Plot ---
-    plt.tight_layout(rect=[0, 0, 1, 0.93]) # Adjust layout for suptitle
+    plt.tight_layout(rect=[0, 0, 1, 0.93])
     plt.savefig(output_file, dpi=300, bbox_inches='tight')
     print(f"\nPlot successfully saved to '{output_file}'")
 
@@ -131,24 +151,18 @@ if __name__ == "__main__":
 
     # --- Example Usage ---
     #
-    # Assume you have two files from two different runs:
-    # - slurm_schedule_stats_run1.csv
-    # - slurm_schedule_stats_run2.csv
-    #
-    # To compare the 'Mean_cycle' time for these two runs on a single plot:
+    # Assume you have four files from four different runs:
+    # - run_A.csv, run_B.csv, run_C.csv, run_D.csv
     #
     # python plot_slurm_stats.py \
-    #   --data-files slurm_schedule_stats_run1.csv slurm_schedule_stats_run2.csv \
+    #   --data-files run_A.csv run_B.csv run_C.csv run_D.csv \
     #   --y-column Mean_cycle \
     #   --title "Comparison of Slurm Mean Schedule Cycle Time" \
     #   --output mean_cycle_comparison.png
     #
-    # To compare the 'cpu_load' from four different node stat files:
-    #
-    # python plot_slurm_stats.py \
-    #   --data-files node_stats_A.csv node_stats_B.csv node_stats_C.csv node_stats_D.csv \
-    #   --y-column load_avg_5m \
-    #   --title "Comparison of Controller 5-min Load Average" \
-    #   --output controller_load_comparison.png
+    # The line for run_A.csv will be light purple ('#c2a5cf').
+    # The line for run_B.csv will be light green ('#a6dba0').
+    # The line for run_C.csv will be dark purple ('#7b3294').
+    # The line for run_D.csv will be dark green ('#008837').
 
 
