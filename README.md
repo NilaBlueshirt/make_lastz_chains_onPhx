@@ -62,14 +62,16 @@ apptainer exec /packages/simg/ucsc-kent_v482.sif chainCleaner \
 
 5. After the `chainCleaner`, there are two more steps to get the end product:
 ```
+module load mamba/latest
+source activate make_lastz_chains-2.0.8_base
+
 cd temp_chain_run/
-
-chainFilter -minScore=1000 Pseudophryne_corroboree.Crinia_signifera.filled.chain__temp > Pseudophryne_corroboree.Crinia_signifera.filled.chain
-
-gzip -c Pseudophryne_corroboree.Crinia_signifera.filled.chain > Pseudophryne_corroboree.Crinia_signifera.final.chain.gz
+chainFilter -minScore=1000 xxx.filled.chain__temp > xxx.filled.chain
+gzip -c xxx.filled.chain > xxx.final.chain.gz
 ```
 
-The `chainCleaner`, `chainFilter` and `gzip` commands are adapted from `make_lastz_chains/make_chains.py` and `make_lastz_chains/steps_implementations/clean_chain_step.py`. The `-c` flag in the `gzip` command is to preserve the input file and ouput the compressed file with a new file name.
+The `chainCleaner`, `chainFilter` and `gzip` commands are adapted from `make_lastz_chains/make_chains.py` and `make_lastz_chains/steps_implementations/clean_chain_step.py`, using the same parameters.
+The `-c` flag in the `gzip` command is to preserve the input file and ouput the compressed file with a new file name.
 
 
 
