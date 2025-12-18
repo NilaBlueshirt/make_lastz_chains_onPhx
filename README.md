@@ -47,9 +47,8 @@ If the note was `manually ran chainCleaner apptainer,  chainFilter and gzip, don
 ### To use the apptainer to re-run the clean_chains step
 
 1. Request an interactive session with 20min and 30G memory as the first try. If getting the "Killed" error message when running `chainCleaner`, increase the memory.
-2. Load `mamba` and activate the env.
-3. Check the `run.log` file in the working directory of this failed run and copy the `chainCleaner` command at the end of the file.
-4. Past the copied command in the second line below, then `cd` into the working directory, and run the command using the `before_cleaning.chain.gz` file:
+2. Check the `run.log` file in the working directory of this failed run and copy the `chainCleaner` command at the end of the file.
+3. Past the copied command in the second line below, then `cd` into the working directory, and run the command using the `before_cleaning.chain.gz` file:
 ```
 apptainer exec /packages/simg/ucsc-kent_v482.sif chainCleaner \
 <paste the code block here>
