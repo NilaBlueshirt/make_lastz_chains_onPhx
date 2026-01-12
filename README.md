@@ -16,13 +16,21 @@ The mamba env can be recreated from the `yml` file. Please see below for more de
 5. The smaller the `chunk size`, the larger the count of the nextflow child jobs will be. If a run failed at the `lastz` or the `chain_run` step, consider reducing the chunk size. The recommended chunk size for these runs is 40M for both reference and query sequences.
 6. The slurm `.out` file has the nextflow logs, the `.err` file has the main job log, which would be the same as `working_dir/run.log`. Both slurm job files are important to keep.
 7. A successful run will have a `.final.chain.gz` file, and `pipeline_parameters.json`, `run.log`, `steps.json`. A failed run will have lots of temp folders in the working directory.
+8. If the job counts are high, the produced slurm logs would likely take up too much space in the home dir, and crash new jobs. If that's the case, remove slurm logs quickly via:
+```
+find /home/username/.local/var/log/slurm/ -maxdepth 1 -type f -delete
+```
+Or avoid generating slurm logs by adding this line to the `test.sh` script:
+```
+find /home/username/.local/var/log/slurm/ -maxdepth 1 -type f -delete
+```
 
 <br />
 
 ## To process a fresh sample pair with job array (recommended)
 1. Pull down this repo, or the original make_lastz_chains repo but patch the `parallelization/nextflow_wrapper.py` file with `parallelization/nextflow_wrapper.py.array` in this repo.
 2. Modify the `test.sh` sbatch script to use Nextflow v25.
-2-7. Same as above. If the job runs normally, for the `lastz`. `chain_run` and `fill_chain` step, the child jobs will be batched into a couple of job arrays, instead of being submitted as individual sbatch jobs. This is very helpful for a busy cluster as the sub-jobs in a job array share the same fairshare score.
+Then same as above. If the job runs normally, for the `lastz`. `chain_run` and `fill_chain` step, the child jobs will be batched into a couple of job arrays, instead of being submitted as individual sbatch jobs. This is very helpful for a busy cluster as the sub-jobs in a job array share the same fairshare score.
 
 <br />
 
