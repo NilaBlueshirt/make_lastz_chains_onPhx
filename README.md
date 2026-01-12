@@ -22,7 +22,7 @@ find /home/username/.local/var/log/slurm/ -maxdepth 1 -type f -delete
 ```
 Or avoid generating slurm logs by adding this line to the `test.sh` script:
 ```
-find /home/username/.local/var/log/slurm/ -maxdepth 1 -type f -delete
+export SLURM_SKIP_EPILOG=1
 ```
 
 <br />
