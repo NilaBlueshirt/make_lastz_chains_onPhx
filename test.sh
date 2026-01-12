@@ -36,5 +36,5 @@ cd /scratch/tianche5/wms/chains/make_lastz_chains_onPhx/make_lastz_chains/
 --chaining_memory 50 \
 $ref_species $query_species $genome_dir/${ref_species}.allScaffs.genome.WM.fasta \
 $genome_dir/${query_species}.allScaffs.genome.WM.fasta \
-#if restarting from a failed step, add this flag:  --continue_from_step lastz 
+#if restarting from a failed step, remve the -f flag and then add: --continue_from_step lastz 
 #to keep temp files and the report files, add this flag:  --keep_temp
