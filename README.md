@@ -30,6 +30,7 @@ export SLURM_SKIP_EPILOG=1
 ## To process a fresh sample pair with job array (recommended)
 1. Pull down this repo, or the original make_lastz_chains repo but patch the `parallelization/nextflow_wrapper.py` file with `parallelization/nextflow_wrapper.py.array` in this repo.
 2. Modify the `test.sh` sbatch script to use Nextflow v25.
+
 Then same as above. If the job runs normally, for the `lastz`. `chain_run` and `fill_chain` step, the child jobs will be batched into a couple of job arrays, instead of being submitted as individual sbatch jobs. This is very helpful for a busy cluster as the sub-jobs in a job array share the same fairshare score.
 
 <br />
